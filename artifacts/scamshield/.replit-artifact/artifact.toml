@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "ScamShield"
+description = "A self-contained prototype that analyzes job postings for recruitment scam signals, produces an explainable risk score, and helps job seekers make safer decisions."
+version = "1.0.0"
+id = "artifacts/scamshield"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24814
+
+[services.development]
+run = "pnpm --filter @workspace/scamshield run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/scamshield", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/scamshield/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24814"
+BASE_PATH = "/"
